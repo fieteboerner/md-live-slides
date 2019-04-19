@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve-prod": "serve -p 8080 -s dist",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -25,6 +26,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "serve": "^11.0.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
