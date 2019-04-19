@@ -14,7 +14,7 @@ export default new Router({
       component: Home,
     },
     {
-      path: 'presentations',
+      path: '/presentations',
       name: 'presentations',
       component: PresentationList,
     },
