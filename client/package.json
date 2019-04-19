@@ -8,7 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "bulma": "^0.7.4",
     "core-js": "^2.6.5",
+    "v-click-outside": "^2.1.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
   },
@@ -30,10 +32,34 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
+      "plugin:vue/recommended"
     ],
-    "rules": {},
+    "rules": {
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "comma-dangle": [
+        "error",
+        "always"
+      ],
+      "vue/html-indent": [
+        "error",
+        4,
+        {
+          "attribute": 1,
+          "baseIndent": 1,
+          "closeBracket": 0,
+          "alignAttributesVertically": true,
+          "ignores": []
+        }
+      ],
+       "vue/script-indent": ["error", 4, {
+            "baseIndent": 0,
+            "switchCase": 0,
+            "ignores": []
+        }]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
