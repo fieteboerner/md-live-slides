@@ -1,5 +1,8 @@
 <template>
-    <section class="section">
+    <section
+        class="section"
+        :class="{ 'is-loading': loading }"
+    >
         <div class="container">
             <h1 class="title">
                 Presentations
@@ -36,15 +39,25 @@
 </template>
 
 <script>
+import PresentationService from '@/services/Presentation';
+
 export default {
     name: 'PresentationList',
     data() {
         return {
-            presentations: [
-                { id: 'aödajdflkjasdlfk44', },
-                { id: 'aödajdflkjasdlfk45', },
-            ],
+            loading: false,
+            presentations: [],
         };
+    },
+    async created() {
+        this.loading = true;
+        try {
+            this.presentations = await PresentationService.list();
+        } catch (error) {
+
+        } finally {
+            this.loading = false;
+        }
     },
 };
 </script>
