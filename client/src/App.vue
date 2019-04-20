@@ -45,12 +45,12 @@
                 </div>
 
                 <div class="navbar-end">
-                    <router-link
-                        :to="{ name: 'presentations' }"
+                    <a
                         class="navbar-item"
+                        @click.prevent="onCreatePresentation"
                     >
                         + Presentation
-                    </router-link>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -62,6 +62,8 @@
 
 <script>
 import ClickOutside from 'v-click-outside'
+import PresentationService from '@/services/Presentation';
+
 export default {
     name: 'App',
     directives: {
@@ -76,6 +78,14 @@ export default {
         onHideMenu() {
             this.menuOpen = false;
         },
+        async onCreatePresentation() {
+            const presentation = await PresentationService.create();
+
+            this.$router.push({
+                name: 'presentation.edit',
+                params: { id: presentation.key },
+            });
+        }
     },
 }
 </script>
