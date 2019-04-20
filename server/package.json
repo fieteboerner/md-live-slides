@@ -8,7 +8,9 @@
     "serve-prod": "node src/server.js"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongo-sanitize": "^1.0.1",
+    "mongoose": "^5.5.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

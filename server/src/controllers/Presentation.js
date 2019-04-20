@@ -1,4 +1,6 @@
-const randomString = (length = 8) => {
+const { Presentation } = require('../models');
+
+const randomString = (length = 16) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -8,24 +10,26 @@ const randomString = (length = 8) => {
   return text;
 }
 
-const index = () => {
-    return [
-        { id: '12345678x' },
-        { id: '12345678y' },
-    ];
+module.exports.index = async (req, res) => {
+    const presentations = await Presentation
+        .find()
+        .sort({ updated: -1 })
+        .select({ key: true, created: true, updated: true })
+        .exec();
+
+    res.json(presentations);
 };
 
-const show = (request) => {
-    return {
-        id: request.params.id,
-    };
+module.exports.show = async (req, res) => {
+    const presentation = await Presentation
+        .findOne({ key: req.params.id })
+        .select({ key: true, content: true, created: true, updated: true })
+        .exec();
+
+    res.json(presentation);
 };
 
-const create = () => {
-    return {
-        id: randomString(),
-        content: '# Hello World!\n',
-    };
+module.exports.create = async (req, res) => {
+    const presentation = await Presentation.create({ key: randomString(), content: '# Hello World!\n' });
+    res.json(presentation);
 };
-
-module.exports = { index, show, create };

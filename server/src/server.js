@@ -1,25 +1,22 @@
 const path = require('path');
 const express = require('express');
+const util = require('./helpers/util');
 const app = express();
 const router = express.Router();
 
-const presentationController = require('./controllers/Presentation.js');
+const PresentationController = require('./controllers/Presentation.js');
 
 const clientPath = path.join(__dirname, '..', '..', 'client', 'dist');
 const port = 8080;
 
-router.get('/api/presentations',function(req,res){
-  res.json(presentationController.index(req));
+router.use(function(req, res, next) {
+    util.sanitize(req.query);
+    next();
 });
 
-router.get('/api/presentation/:id',function(req,res){
-  res.json(presentationController.show(req));
-});
-
-router.post('/api/presentation',function(req,res){
-  res.json(presentationController.create(req));
-});
-
+router.get('/api/presentations', PresentationController.index);
+router.post('/api/presentation', PresentationController.create);
+router.get('/api/presentation/:id', PresentationController.show);
 
 router.use('*', function (req, res) {
     res.sendFile(path.join(clientPath, 'index.html'));
