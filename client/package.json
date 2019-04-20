@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "bulma": "^0.7.4",
     "core-js": "^2.6.5",
+    "throttle-debounce": "^2.1.0",
     "v-click-outside": "^2.1.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"

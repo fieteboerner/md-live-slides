@@ -27,9 +27,12 @@
                         <td>{{ presentation.updatedAt | fromNow }}</td>
                         <td>
                             <div class="action-buttons is-pulled-right">
-                                <button class="button is-primary">
+                                <router-link
+                                    :to="getEditRoute(presentation)"
+                                    class="button is-primary"
+                                >
                                     Edit
-                                </button>
+                                </router-link>
                                 <button class="button is-secondary">
                                     Show
                                 </button>
@@ -62,6 +65,14 @@ export default {
         } finally {
             this.loading = false;
         }
+    },
+    methods: {
+        getEditRoute(presentation) {
+            return {
+                name: 'presentation.edit',
+                params: { id: presentation.key },
+            };
+        },
     },
 };
 </script>
