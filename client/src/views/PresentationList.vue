@@ -12,15 +12,19 @@
                 <thead>
                     <tr>
                         <td>Presentation Id</td>
+                        <td>Created At</td>
+                        <td>Last Update</td>
                         <td />
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         v-for="presentation in presentations"
-                        :key="presentation.id"
+                        :key="presentation.key"
                     >
-                        <td>{{ presentation.id }}</td>
+                        <td>{{ presentation.key }}</td>
+                        <td>{{ presentation.createdAt | dateTime }}</td>
+                        <td>{{ presentation.updatedAt | fromNow }}</td>
                         <td>
                             <div class="action-buttons is-pulled-right">
                                 <button class="button is-primary">

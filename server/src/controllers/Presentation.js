@@ -13,8 +13,8 @@ const randomString = (length = 16) => {
 module.exports.index = async (req, res) => {
     const presentations = await Presentation
         .find()
-        .sort({ updated: -1 })
-        .select({ key: true, created: true, updated: true })
+        .sort({ updatedAt: -1 })
+        .select({ key: true, createdAt: true, updatedAt: true })
         .exec();
 
     res.json(presentations);
@@ -23,7 +23,7 @@ module.exports.index = async (req, res) => {
 module.exports.show = async (req, res) => {
     const presentation = await Presentation
         .findOne({ key: req.params.id })
-        .select({ key: true, content: true, created: true, updated: true })
+        .select({ key: true, content: true, createdAt: true, updatedAt: true })
         .exec();
 
     res.json(presentation);
