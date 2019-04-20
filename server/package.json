@@ -4,7 +4,8 @@
   "main": "src/server.js",
   "license": "MIT",
   "scripts": {
-    "serve": "nodemon -e js -x node --inspect src/server.js"
+    "serve": "nodemon -e js -x node --inspect src/server.js",
+    "serve-prod": "node src/server.js"
   },
   "dependencies": {
     "express": "^4.16.4"
