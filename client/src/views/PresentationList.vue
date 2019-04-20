@@ -24,7 +24,9 @@
                     >
                         <td>{{ presentation.key }}</td>
                         <td>{{ presentation.createdAt | dateTime }}</td>
-                        <td>{{ presentation.updatedAt | fromNow }}</td>
+                        <td>
+                            <MomentsAgo :date="presentation.updatedAt" />
+                        </td>
                         <td>
                             <div class="action-buttons is-pulled-right">
                                 <router-link
@@ -46,10 +48,12 @@
 </template>
 
 <script>
+import MomentsAgo from '@/components/MomentsAgo';
 import PresentationService from '@/services/Presentation';
 
 export default {
     name: 'PresentationList',
+    components: { MomentsAgo },
     data() {
         return {
             loading: false,

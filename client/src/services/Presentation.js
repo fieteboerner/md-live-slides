@@ -18,4 +18,10 @@ export default class Presentation {
 
         return data;
     }
+
+    static async update(id, attributes) {
+        const { data } = await axios.put(`/api/presentation/${id}`, attributes);
+
+        return data;
+    }
 }

@@ -29,6 +29,22 @@ module.exports.show = async (req, res) => {
     res.json(presentation);
 };
 
+/**
+ * @param {http.IncomingMessage} req
+ */
+module.exports.update = async (req, res) => {
+    const attributes = {
+        ...req.body,
+        updatedAt: new Date,
+    };
+    const presentation = await Presentation
+        .findOneAndUpdate({ key: req.params.id }, attributes, { new: true })
+        .select({ key: true, content: true, createdAt: true, updatedAt: true })
+        .exec();
+
+    res.json(presentation);
+};
+
 module.exports.create = async (req, res) => {
     const presentation = await Presentation.create({ key: randomString(), content: '# Hello World!\n' });
     res.json(presentation);
