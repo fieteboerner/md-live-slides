@@ -42,6 +42,7 @@ export default {
 <style lang="scss">
     @import "~codemirror/lib/codemirror.css";
     @import "~codemirror/theme/monokai.css";
+    @import "~codemirror/theme/hopscotch.css";
 
     .CodeMirror {
         height: 100%;

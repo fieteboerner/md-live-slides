@@ -99,6 +99,12 @@ export default {
     display: flex;
     flex-direction: column;
 
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+    }
+
     .content {
         flex-grow: 1;
     }

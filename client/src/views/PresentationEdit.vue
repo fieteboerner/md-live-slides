@@ -40,7 +40,8 @@ export default {
             originalContent: '',
             editorOptions: {
                 mode: 'text/x-markdown',
-                theme: 'monokai',
+                // theme: 'monokai',
+                theme: 'hopscotch',
                 styleActiveLine: true,
                 lineNumbers: true,
             },
@@ -95,9 +96,12 @@ export default {
 
     .bottom-information {
         display: flex;
+        position: sticky;
+        bottom: 0;
         padding: 0.5rem 0.75rem;
         align-items: center;
         height: 4rem;
+        z-index: 30;
     }
 }
 </style>
