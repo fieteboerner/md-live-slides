@@ -35,9 +35,12 @@
                                 >
                                     Edit
                                 </router-link>
-                                <button class="button is-secondary">
+                                <router-link
+                                    :to="getShowRoute(presentation)"
+                                    class="button is-secondary"
+                                >
                                     Show
-                                </button>
+                                </router-link>
                             </div>
                         </td>
                     </tr>
@@ -74,6 +77,12 @@ export default {
         getEditRoute(presentation) {
             return {
                 name: 'presentation.edit',
+                params: { id: presentation.key },
+            };
+        },
+        getShowRoute(presentation) {
+            return {
+                name: 'presentation.show',
                 params: { id: presentation.key },
             };
         },

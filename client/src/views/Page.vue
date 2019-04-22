@@ -94,14 +94,10 @@ export default {
 <style lang="scss">
 @import "../assets/scss/bulma/index.scss";
 
-html, body {
-    height: 100%;
-}
-
 #app {
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%;
 
     .content {
         flex-grow: 1;
