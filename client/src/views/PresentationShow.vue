@@ -38,6 +38,9 @@ export default {
                 highlightStyle: 'monokai',
                 highlightLanguage: 'remark',
                 highlightLines: true,
+                navigation: {
+                    scroll: false,
+                },
             });
         }
     }
