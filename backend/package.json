@@ -4,8 +4,8 @@
   "main": "src/server.js",
   "license": "MIT",
   "scripts": {
-    "serve": "nodemon -e js -x node --inspect src/server.js",
-    "serve-prod": "node src/server.js"
+    "dev": "nodemon -e js -x node --inspect src/server.js",
+    "prod": "node src/server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

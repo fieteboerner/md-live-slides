@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  frontend:
+    build: ./frontend
+    restart: on-failure
+    volumes:
+      - ./frontend:/home/node/frontend
+    networks:
+      - proxy
+    command: ["yarn", "dev"]
+  backend:
+    build: ./backend
+    restart: on-failure
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/home/node/backend
+    networks:
+      - proxy
+      - backend
+    command: ["yarn", "dev"]

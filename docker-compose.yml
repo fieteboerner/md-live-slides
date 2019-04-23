@@ -5,41 +5,20 @@ services:
     image: nginx:1.15-alpine
     restart: on-failure
     depends_on:
-      - client
-      - server
+      - frontend
+      - backend
     networks:
       - proxy
     ports:
       - "8080:8080"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/presentation.conf:ro
-  client:
-    image: node:alpine
-    restart: on-failure
-    volumes:
-      - ./client:/home/node/client
-    working_dir: /home/node/client
-    networks:
-      - proxy
-    command: sh -c "yarn && yarn serve"
-  server:
-    image: node:alpine
-    restart: on-failure
-    depends_on:
-      - mongo
-    volumes:
-      - ./server:/home/node/server
-    working_dir: /home/node/server
-    networks:
-      - proxy
-      - backend
-    command: sh -c "yarn && yarn serve"
   mongo:
     image: mongo:4.1
-    volumes:
-      - mongodb:/data/db/
     networks:
       - backend
+    volumes:
+      - mongodb:/data/db/
 
 networks:
   proxy:
