@@ -11,27 +11,15 @@ const randomString = (length = 16) => {
 }
 
 module.exports.index = async (req, res) => {
-    const presentations = await Presentation
-        .find()
-        .sort({ updatedAt: -1 })
-        .select({ key: true, createdAt: true, updatedAt: true })
-        .exec();
-
+    const presentations = await Presentation.list();
     res.json(presentations);
 };
 
 module.exports.show = async (req, res) => {
-    const presentation = await Presentation
-        .findOne({ key: req.params.id })
-        .select({ key: true, content: true, createdAt: true, updatedAt: true })
-        .exec();
-
+    const presentation = await Presentation.findByKey(req.params.id);
     res.json(presentation);
 };
 
-/**
- * @param {http.IncomingMessage} req
- */
 module.exports.update = async (req, res) => {
     const attributes = {
         ...req.body,
@@ -46,6 +34,10 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports.create = async (req, res) => {
-    const presentation = await Presentation.create({ key: randomString(), content: '# Hello World!\n' });
+    const presentation = await Presentation.create({
+        key: randomString(),
+        content: '# Hello World!\n'
+    });
+
     res.json(presentation);
 };

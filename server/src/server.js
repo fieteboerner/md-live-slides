@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const util = require('./helpers/util');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const config = require('./config');
 
 const app = express();
 const router = express.Router();
@@ -32,3 +34,16 @@ app.use('/', router);
 app.listen(port, function () {
   console.log('App is listen')
 })
+
+
+connectDatabase(config.database);
+
+function connectDatabase(uri) {
+  return new Promise((resolve, reject) => {
+    mongoose.connection
+      .on('error', error => reject(error))
+      .on('close', () => console.log('Database connection closed.'))
+      .once('open', () => resolve(mongoose.connections[0]))
+    mongoose.connect(uri);
+  })
+}
