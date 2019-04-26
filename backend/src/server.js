@@ -1,11 +1,16 @@
 const path = require('path');
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 const util = require('./helpers/util');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
 
 const app = express();
+const server = http.Server(app);
+const io = socketIo(server, { path: '/api/socket' });
+
 const router = express.Router();
 
 const PresentationController = require('./controllers/Presentation.js');
@@ -31,10 +36,7 @@ router.use('*', function (req, res) {
 app.use(express.static(clientPath));
 app.use('/', router);
 
-app.listen(port, function () {
-  console.log('App is listen')
-})
-
+server.listen(port);
 
 connectDatabase(config.database);
 

@@ -28,6 +28,7 @@
 import PresentationService from '@/services/Presentation';
 import Editor from '@/components/Editor';
 import MomentsAgo from '@/components/MomentsAgo';
+import Socket from '@/services/Socket';
 
 export default {
     name: 'PresentationEdit',

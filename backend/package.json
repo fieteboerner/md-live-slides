@@ -10,8 +10,10 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "http": "^0.0.0",
     "mongo-sanitize": "^1.0.1",
-    "mongoose": "^5.5.2"
+    "mongoose": "^5.5.2",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"
