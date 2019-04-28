@@ -6,6 +6,10 @@ const util = require('./helpers/util');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
+const EditorSocketIOServer = require('ot/lib/editor-socketio-server');
+const { debounce } = require('throttle-debounce');
+
+const { Presentation } = require('./models');
 
 const app = express();
 const server = http.Server(app);
@@ -19,7 +23,7 @@ const clientPath = path.join(__dirname, '..', '..', 'client', 'dist');
 const port = 8080;
 
 router.use(bodyParser.json());
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     util.sanitize(req.query);
     next();
 });
@@ -38,14 +42,40 @@ app.use('/', router);
 
 server.listen(port);
 
+const sessions = {};
+async function getSession(id) {
+    if (!(id in sessions)) {
+        const presentation = await Presentation.findByKey(id)
+        sessions[id] = new EditorSocketIOServer(presentation.content, [], id, null, savePresentation);
+    }
+    return sessions[id];
+}
+
+const savePresentation = debounce(1000, async function(key, content) {
+    const attributes = {
+        content,
+        updatedAt: new Date,
+    };
+    const presentation = await Presentation
+        .findOneAndUpdate({ key }, attributes, { new: true })
+        .exec();
+});
+
+io.on('connection', async (socket) => {
+    const handshakeData = socket.request;
+    const { docId } = handshakeData._query;
+    const session = await getSession(docId);
+    session.addClient(socket);
+});
+
 connectDatabase(config.database);
 
 function connectDatabase(uri) {
-  return new Promise((resolve, reject) => {
-    mongoose.connection
-      .on('error', error => reject(error))
-      .on('close', () => console.log('Database connection closed.'))
-      .once('open', () => resolve(mongoose.connections[0]))
-    mongoose.connect(uri);
-  })
+    return new Promise((resolve, reject) => {
+        mongoose.connection
+            .on('error', error => reject(error))
+            .on('close', () => console.log('Database connection closed.'))
+            .once('open', () => resolve(mongoose.connections[0]))
+        mongoose.connect(uri);
+    })
 }

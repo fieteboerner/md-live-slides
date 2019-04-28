@@ -1,5 +1,6 @@
 <template>
     <CodeMirror
+        ref="codemirror"
         :value="value"
         :options="computedOptions"
         @input="onInput"
@@ -11,21 +12,42 @@ import { debounce } from 'throttle-debounce';
 import { codemirror as CodeMirror } from 'vue-codemirror';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/mode/markdown/markdown.js';
+import CodeMirrorSocket from '@/classes/CodeMirrorSocket';
 
 export default {
     name: 'Editor',
     components: { CodeMirror },
     props: {
-        value: String,
+        value: {
+            type: String,
+            default: '',
+        },
         options: {
             type: Object,
             default: () => ({}),
         },
     },
+    data() {
+        return {
+            cm: null,
+        };
+    },
     computed: {
         computedOptions() {
             return this.options;
         },
+    },
+    mounted() {
+        this.cm = this.$refs.codemirror.cminstance;
+        const options = {
+            path: '/api/socket',
+            query: { docId: this.$route.params.id },
+        };
+        const cmSocket = new CodeMirrorSocket(options, this.cm);
+
+        this.$once('hook:destroyed', () => {
+            cmSocket.disconnect();
+        });
     },
     methods: {
         onInput(value) {

@@ -5764,6 +5764,10 @@ osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
+"ot@https://github.com/fieteboerner/ot.js":
+  version "0.0.15"
+  resolved "https://github.com/fieteboerner/ot.js#d69ce48cfe7d4c7effe175c644692470b54a7c3a"
+
 p-defer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-1.0.0.tgz#9f6eb182f6c9aa8cd743004a7d4f96b196b0fb0c"

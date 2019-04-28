@@ -13,6 +13,7 @@
     "bulma": "^0.7.4",
     "core-js": "^2.6.5",
     "moment": "^2.24.0",
+    "ot": "https://github.com/fieteboerner/ot.js",
     "remark": "git+https://git@github.com/gnab/remark",
     "socket.io-client": "^2.2.0",
     "throttle-debounce": "^2.1.0",

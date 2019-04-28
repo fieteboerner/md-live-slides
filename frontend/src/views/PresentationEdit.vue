@@ -4,10 +4,8 @@
         :class="{ 'is-loading': loading }"
     >
         <Editor
-            v-model="presentation.content"
             class="editor"
             :options="editorOptions"
-            @update="onAutoSave"
         />
         <div class="bottom-information has-background-primary has-text-white">
             <div>
@@ -28,7 +26,6 @@
 import PresentationService from '@/services/Presentation';
 import Editor from '@/components/Editor';
 import MomentsAgo from '@/components/MomentsAgo';
-import Socket from '@/services/Socket';
 
 export default {
     name: 'PresentationEdit',
