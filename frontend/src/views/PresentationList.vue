@@ -14,7 +14,7 @@
             >
                 <thead>
                     <tr>
-                        <td>Presentation Id</td>
+                        <td>Title</td>
                         <td>Created At</td>
                         <td>Last Update</td>
                         <td />
@@ -25,7 +25,7 @@
                         v-for="presentation in presentations"
                         :key="presentation.key"
                     >
-                        <td>{{ presentation.key }}</td>
+                        <td>{{ presentation.title }}</td>
                         <td>{{ presentation.createdAt | dateTime }}</td>
                         <td>
                             <MomentsAgo :date="presentation.updatedAt" />

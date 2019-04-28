@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Parser = require('remark/src/remark/parser');
 
 const PresentationSchema = new mongoose.Schema({
   key: {
@@ -6,6 +7,10 @@ const PresentationSchema = new mongoose.Schema({
     lowercase: true,
     unique: true,
     required: true
+  },
+  title: {
+      type: String,
+      required: true,
   },
   content: {
     type: String,
@@ -22,6 +27,8 @@ const PresentationSchema = new mongoose.Schema({
 });
 
 PresentationSchema.pre('save', function() {
+    const slides = (new Parser()).parse(this.content);
+    this.title = slides[0].properties.title || this.key;
     this.updatedAt = new Date();
 });
 
@@ -38,7 +45,7 @@ PresentationSchema.statics = {
   list(criteria = {}) {
     return this.find(criteria)
         .sort({ updatedAt: -1 })
-        .select({ key: true, createdAt: true, updatedAt: true })
+        .select({ key: true, title: true, createdAt: true, updatedAt: true })
         .exec();
   },
 
@@ -48,7 +55,7 @@ PresentationSchema.statics = {
    */
   findByKey(key) {
       return this.findOne({ key })
-        .select({ key: true, content: true, createdAt: true, updatedAt: true })
+        .select({ key: true, title: true, content: true, createdAt: true, updatedAt: true })
         .exec();
   }
 };

@@ -13,7 +13,8 @@ const { Presentation } = require('./models');
 
 const app = express();
 const server = http.Server(app);
-const io = socketIo(server, { path: '/api/socket/document' });
+// const io = socketIo(server, { path: '/api/socket' })
+const ioDocument = socketIo(server, { path: '/api/socket/document' });
 
 const router = express.Router();
 
@@ -63,7 +64,7 @@ const savePresentation = debounce(1000, async function(key, content) {
     await presentation.save();
 });
 
-io.on('connection', async (socket) => {
+ioDocument.on('connection', async (socket) => {
     const handshakeData = socket.request;
     const { docId } = handshakeData._query;
     try {

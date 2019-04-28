@@ -14,6 +14,7 @@
     "mongo-sanitize": "^1.0.1",
     "mongoose": "^5.5.2",
     "ot": "https://github.com/fieteboerner/ot.js",
+    "remark": "git+https://git@github.com/gnab/remark",
     "socket.io": "^2.2.0",
     "throttle-debounce": "^2.1.0"
   },
