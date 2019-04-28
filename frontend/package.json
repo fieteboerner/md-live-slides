@@ -71,7 +71,14 @@
           "switchCase": 0,
           "ignores": []
         }
-      ]
+      ],
+      "vue/max-attributes-per-line": ["error", {
+          "singleline": 3,
+          "multiline": {
+          "max": 3,
+          "allowFirstLine": true
+        }
+      }]
     },
     "parserOptions": {
       "parser": "babel-eslint"

@@ -4,11 +4,14 @@
         :class="{ 'is-loading': loading }"
     >
         <div class="container">
-            <h1 class="title">
+            <h1 class="title is-1">
                 Presentations
             </h1>
 
-            <table class="table is-striped">
+            <table
+                v-if="loading || presentations.length"
+                class="table is-striped"
+            >
                 <thead>
                     <tr>
                         <td>Presentation Id</td>
@@ -46,6 +49,14 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-else class="has-text-centered">
+                <h3 class="title is-3">
+                    There are no Presentations yet
+                </h3>
+                <button class="button is-primary" @click="onCreatePresentation">
+                    Create your first
+                </button>
+            </div>
         </div>
     </section>
 </template>
@@ -74,6 +85,14 @@ export default {
         }
     },
     methods: {
+        async onCreatePresentation() {
+            const presentation = await PresentationService.create();
+
+            this.$router.push({
+                name: 'presentation.edit',
+                params: { id: presentation.key },
+            });
+        },
         getEditRoute(presentation) {
             return {
                 name: 'presentation.edit',
@@ -95,4 +114,3 @@ export default {
     margin-left: 0.5em;
 }
 </style>
-
