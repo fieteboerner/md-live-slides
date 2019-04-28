@@ -21,9 +21,13 @@ const PresentationSchema = new mongoose.Schema({
   }
 });
 
-PresentationSchema.pre('update', function() {
-  this.update({},{ $set: { updatedAt: new Date() } });
+PresentationSchema.pre('save', function() {
+    this.updatedAt = new Date();
 });
+
+// PresentationSchema.post('save', function() {
+//     console.log('notify clients of ', this);
+// });
 
 
 PresentationSchema.statics = {

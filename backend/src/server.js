@@ -58,13 +58,9 @@ async function getSession(id) {
 }
 
 const savePresentation = debounce(1000, async function(key, content) {
-    const attributes = {
-        content,
-        updatedAt: new Date,
-    };
-    const presentation = await Presentation
-        .findOneAndUpdate({ key }, attributes, { new: true })
-        .exec();
+    const presentation = await Presentation.findByKey(key);
+    presentation.content = content;
+    await presentation.save();
 });
 
 io.on('connection', async (socket) => {

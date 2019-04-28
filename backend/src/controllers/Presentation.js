@@ -24,14 +24,10 @@ module.exports.show = async (req, res) => {
 };
 
 module.exports.update = async (req, res) => {
-    const attributes = {
-        ...req.body,
-        updatedAt: new Date,
-    };
-    const presentation = await Presentation
-        .findOneAndUpdate({ key: req.params.id }, attributes, { new: true })
-        .select({ key: true, content: true, createdAt: true, updatedAt: true })
-        .exec();
+    const key = req.params.id;
+    const presentation = await Presentation.findByKey(key);
+    presentation.content = req.body.content;
+    await presentation.save();
 
     res.json(presentation);
 };
