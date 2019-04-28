@@ -8,6 +8,8 @@ services:
       - ./frontend:/home/node/frontend
     networks:
       - proxy
+    environment:
+      - NODE_ENV=development
     command: ["yarn", "dev"]
   backend:
     build: ./backend
@@ -19,4 +21,6 @@ services:
     networks:
       - proxy
       - backend
+    environment:
+      - NODE_ENV=development
     command: ["yarn", "dev"]

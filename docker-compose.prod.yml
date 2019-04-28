@@ -6,6 +6,8 @@ services:
     restart: on-failure
     networks:
       - proxy
+    environment:
+      - NODE_ENV=production
   backend:
     build: ./backend
     restart: on-failure
@@ -14,3 +16,5 @@ services:
     networks:
       - proxy
       - backend
+    environment:
+      - NODE_ENV=production
