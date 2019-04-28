@@ -314,3 +314,10 @@ body > .navbar {
         }
     }
 }
+
+.content {
+    pre {
+        // overrides padding of bulma, that CodeMirror can look properly
+        padding: 0 0.25em;
+    }
+}
