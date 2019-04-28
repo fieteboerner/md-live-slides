@@ -1,35 +1,48 @@
 <template>
-    <section
-        v-if="loading"
-        class="section is-loading"
-    />
+    <section v-if="loading || error" class="section" :class="{ 'is-loading': loading }">
+        <ErrorMessage v-if="error">
+            <p>{{ error }}</p>
+            <router-link :to="{ name: 'presentations' }">
+                Go back to List
+            </router-link>
+        </ErrorMessage>
+    </section>
 </template>
 
 <script>
 import 'remark/src/remark';
 import PresentationService from '@/services/Presentation';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default {
     name: 'PresentationShow',
+    components: { ErrorMessage },
     data() {
         return {
             loading: false,
+            error: '',
             presentation: {},
             instance: null,
         };
     },
     async created() {
         this.loading = true;
+        this.error = '';
         try {
             this.presentation = await PresentationService.get(this.$route.params.id);
-        } catch (error) {
-
+        } catch ({ response }) {
+            if(response.status === 404) {
+                this.error = 'Presentation could not be found';
+            }
         } finally {
             this.loading = false;
         }
-        // init remark after the is loading state was handled by vue in the dom
-        // after the remark init the vue dom reactivity is broken
-        this.$nextTick(() => this.initRemark());
+
+        if (this.presentation.key) {
+            // init remark after the is loading state was handled by vue in the dom
+            // after the remark init the vue dom reactivity is broken
+            this.$nextTick(() => this.initRemark());
+        }
     },
     methods: {
         initRemark() {

@@ -3,21 +3,29 @@
         class="editor-section"
         :class="{ 'is-loading': loading }"
     >
+        <ErrorMessage v-if="error" class="section error-message">
+            <p>{{ error }}</p>
+            <router-link :to="{ name: 'presentations' }">
+                Go back to List
+            </router-link>
+        </ErrorMessage>
         <Editor
+            v-else
             class="editor"
             :options="editorOptions"
+            :socket-options="socketOptions"
         />
         <div class="bottom-information has-background-primary has-text-white">
-            <div>
-                <span>Last auto save: </span>
-                <MomentsAgo :date="presentation.updatedAt" />
-                <span
-                    v-if="saving"
-                    class="has-text-grey"
-                >
-                    – saving ...
+            <template v-if="!error">
+                <span>Created: </span>
+                <MomentsAgo :date="presentation.createdAt" />
+
+                <span class="preview-link">
+                    <router-link :to="getShowRoute(presentation)" target="_blank">
+                        Show Presentation
+                    </router-link>
                 </span>
-            </div>
+            </template>
         </div>
     </section>
 </template>
@@ -26,15 +34,16 @@
 import PresentationService from '@/services/Presentation';
 import Editor from '@/components/Editor';
 import MomentsAgo from '@/components/MomentsAgo';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default {
     name: 'PresentationEdit',
-    components: { Editor, MomentsAgo },
+    components: { Editor, ErrorMessage, MomentsAgo },
     data() {
         return {
             loading: false,
-            saving: false,
-            presentation: { content: 'Loading...', updatedAt: '' },
+            error: '',
+            presentation: { content: 'Loading...', createdAt: '' },
             originalContent: '',
             editorOptions: {
                 mode: 'text/x-markdown',
@@ -42,6 +51,10 @@ export default {
                 theme: 'hopscotch',
                 styleActiveLine: true,
                 lineNumbers: true,
+            },
+            socketOptions: {
+                path: '/api/socket/document',
+                query: { docId: this.$route.params.id },
             },
         };
     },
@@ -51,38 +64,33 @@ export default {
     methods: {
         async fetchData() {
             this.loading = true;
+            this.error = '';
             try {
                 this.presentation = await PresentationService.get(this.$route.params.id);
                 this.originalContent = this.presentation.content;
-            } catch (error) {
-
+            } catch ({ response }) {
+                if(response.status === 404) {
+                    this.error = 'Presentation could not be found';
+                }
             } finally {
                 this.loading = false;
             }
         },
-        async onAutoSave(content) {
-            if (this.saving || this.originalContent === content) {
-                return;
-            }
-            this.saving = true;
-            try {
-                const presentation = await PresentationService.update(this.presentation.key, { content });
-                this.presentation = {
-                    ...presentation,
-                    content: this.presentation.content,
-                };
-                this.originalContent = content;
-            } catch (error) {
-
-            } finally {
-                this.saving = false;
-            }
+        getShowRoute(presentation) {
+            return {
+                name: 'presentation.show',
+                params: { id: presentation.key },
+            };
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
+.error-message {
+    height: 100%;
+}
+
 .editor-section {
     height: 100%;
     display: flex;
@@ -100,6 +108,10 @@ export default {
         align-items: center;
         height: 4rem;
         z-index: 30;
+
+        .preview-link {
+            margin-left: 1em;
+        }
     }
 }
 </style>

@@ -26,6 +26,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        socketOptions: {
+            type: Object,
+            default: null,
+        }
     },
     data() {
         return {
@@ -39,15 +43,13 @@ export default {
     },
     mounted() {
         this.cm = this.$refs.codemirror.cminstance;
-        const options = {
-            path: '/api/socket',
-            query: { docId: this.$route.params.id },
-        };
-        const cmSocket = new CodeMirrorSocket(options, this.cm);
+        if(this.socketOptions) {
+            const cmSocket = new CodeMirrorSocket(this.socketOptions, this.cm);
 
-        this.$once('hook:destroyed', () => {
-            cmSocket.disconnect();
-        });
+            this.$once('hook:beforeDestroy', () => {
+                cmSocket.disconnect();
+            });
+        }
     },
     methods: {
         onInput(value) {

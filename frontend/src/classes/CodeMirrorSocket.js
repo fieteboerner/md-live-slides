@@ -19,7 +19,9 @@ export default class CodeMirrorSocket {
 
 
     disconnect() {
-        this.editorAdapter.detach();
+        if (this.editorAdapter) {
+            this.editorAdapter.detach();
+        }
         this.socket.disconnect();
     }
 };
