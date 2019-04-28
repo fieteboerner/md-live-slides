@@ -35,7 +35,8 @@ module.exports.update = async (req, res) => {
 module.exports.create = async (req, res) => {
     const presentation = await Presentation.create({
         key: randomString(),
-        content: '# Hello World!\n'
+        title: 'Hello World',
+        content: '# Hello World!\n',
     });
 
     res.json(presentation);
