@@ -13,7 +13,7 @@ const { Presentation } = require('./models');
 
 const app = express();
 const server = http.Server(app);
-const io = socketIo(server, { path: '/api/socket' });
+const io = socketIo(server, { path: '/api/socket/document' });
 
 const router = express.Router();
 
@@ -42,10 +42,16 @@ app.use('/', router);
 
 server.listen(port);
 
+/**
+ * handle collaboration socket connections
+ */
 const sessions = {};
 async function getSession(id) {
     if (!(id in sessions)) {
         const presentation = await Presentation.findByKey(id)
+        if (!presentation) {
+            throw new Error(`Could not find Presentation with id: "${id}"`);
+        }
         sessions[id] = new EditorSocketIOServer(presentation.content, [], id, null, savePresentation);
     }
     return sessions[id];
@@ -64,8 +70,13 @@ const savePresentation = debounce(1000, async function(key, content) {
 io.on('connection', async (socket) => {
     const handshakeData = socket.request;
     const { docId } = handshakeData._query;
-    const session = await getSession(docId);
-    session.addClient(socket);
+    try {
+        const session = await getSession(docId, socket);
+        session.addClient(socket);
+    } catch (error) {
+        socket.disconnect();
+        console.log(`Socket was closed because of an error: ${error.message}`);
+    }
 });
 
 connectDatabase(config.database);

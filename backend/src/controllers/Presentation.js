@@ -17,6 +17,9 @@ module.exports.index = async (req, res) => {
 
 module.exports.show = async (req, res) => {
     const presentation = await Presentation.findByKey(req.params.id);
+    if (!presentation) {
+        res.sendStatus(404);
+    }
     res.json(presentation);
 };
 
