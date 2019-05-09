@@ -23,4 +23,5 @@ services:
       - backend
     environment:
       - NODE_ENV=development
+      - MONGO_URL=mongo:27017/md-live-slides
     command: ["yarn", "dev"]
