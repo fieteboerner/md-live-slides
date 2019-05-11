@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default class Presentation {
     static async list() {
-        const { data } = await axios.get('/api/presentations');
+        const { data } = await axios.get('/api/presentation');
 
         return data;
     }
